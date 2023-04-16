@@ -3,9 +3,22 @@ $(document).ready(function () {
     sendTasksToDB();
     getItems();
 
-    $('#view-items').on('click', '.delete-task-btn', deleteTask)
+    $('#view-items').on('click', '.delete-task-btn', deleteTask);
+    $('#view-items').on('click', '.is-task-checked', checkedTask);
 
 }); // end doc ready
+
+function checkedTask() {
+    console.log('checked?');
+    //get the state of the checkbox and if true update
+    let checkbox = document.getElementById('task-completed').checked;
+    let isChecked = false;
+    if (checkbox === true) {
+        isChecked = true;
+        console.log('isChecked', isChecked)
+    }
+
+}
 
 function deleteTask() {
     let idToDelete = $(this).parent().parent().data('id');
@@ -68,7 +81,7 @@ function getItems() {
                 `
             <tr data-id = ${item.id}>
             <td>${item.item}</td><td>
-            <button class="complete-task-btn">💚</button>
+            <input type="checkbox" class="is-task-checked" id ="task-completed" value="${item.completed}">
             <button class="delete-task-btn">❌</button>
           </td>
             `)
