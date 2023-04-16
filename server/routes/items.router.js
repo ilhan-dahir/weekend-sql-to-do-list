@@ -27,6 +27,21 @@ itemRouter.get('/', (req, res) => {
 })
 
 //POST
+itemRouter.post('/', (req, res) => {
+    console.log('POST /items');
+    let newTask = req.body;
+    let sqlText = `INSERT INTO "to_do_list" ("item","completed")
+                    VALUES($1, $2);`;
+    let sqlValue = [newTask.item, newTask.completed];
+    pool.query(sqlText, sqlValue)
+        .then((dbRes) => {
+            res.sendStatus(201);
+        })
+        .catch(error => {
+            console.log(`Error adding new task`, error);
+            res.sendStatus(500);
+        })
+})
 
 //PUT
 
