@@ -46,5 +46,34 @@ itemRouter.post('/', (req, res) => {
 //PUT
 
 //DELETE
+itemRouter.delete('/:id', (req, res) => {
+    console.log(req.params);
+
+    let theIdToDelete = req.params.id;
+
+    // Set up to sanitize the input when paired with
+    //  sqlValues.
+    let sqlText = `
+        DELETE from "to_do_list"
+            where "id"=$1;
+    `;
+
+    // Pair with sqlText to sanitize input.
+    let sqlValues = [theIdToDelete];
+
+    pool.query(sqlText, sqlValues)
+        .then((dbRes) => {
+            // Send "Okay" to the client that declares this
+            //  delete was accepted/processed
+            res.sendStatus(200);
+        })
+        .catch((dbErr) => {
+            // Log that there was an issue with this function
+            console.log('delete /items/:id error:', dbErr);
+            // Send "Internal Server Error" status to client
+            res.sendStatus(500);
+        })
+
+})
 
 module.exports = itemRouter;

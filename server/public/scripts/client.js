@@ -3,7 +3,24 @@ $(document).ready(function () {
     sendTasksToDB();
     getItems();
 
+    $('#view-items').on('click', '.delete-task-btn', deleteTask)
+
 }); // end doc ready
+
+function deleteTask() {
+    let idToDelete = $(this).parent().parent().data('id');
+    console.log(idToDelete);
+
+    $.ajax({
+        method: 'DELETE',
+        url: `/items/${idToDelete}`
+    }).then(function (response) {
+        //Call on getItems to update DOM
+        getItems();
+    }).catch(function (error) {
+        console.log(`Error Deleting ${idToDelete} error --> ${error}`);
+    })
+}//end deleteTask
 
 function sendTasksToDB() {
     $('#add-button').on('click', function () {
@@ -16,7 +33,7 @@ function sendTasksToDB() {
         // call saveTask with new object
         saveTask(taskToSend);
     })
-}
+}//end sendTaskToDB
 
 function saveTask(newTask) {
     console.log('in saveTasK', newTask);
@@ -33,7 +50,7 @@ function saveTask(newTask) {
         .catch(function (error) {
             console.log('The "/items" ajax post request failed with error: ', error);
         })
-}
+}//end saveTask
 
 function getItems() {
     console.log('in getItems');
@@ -50,7 +67,10 @@ function getItems() {
             $('#view-items').append(
                 `
             <tr data-id = ${item.id}>
-            <td>${item.item}</td>
+            <td>${item.item}</td><td>
+            <button class="complete-task-btn">💚</button>
+            <button class="delete-task-btn">❌</button>
+          </td>
             `)
         }
     })
