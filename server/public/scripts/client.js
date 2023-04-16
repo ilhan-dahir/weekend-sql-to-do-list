@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    // event.preventDefault();
     console.log('JQ');
     sendTasksToDB();
     getItems();
@@ -9,14 +10,37 @@ $(document).ready(function () {
 }); // end doc ready
 
 function checkedTask() {
-    console.log('checked?');
+    //get id of item to update
+    let idToUpdate = $(this).parent().parent().data('id');
+    // console.log($(this).parent().parent().attr("data-id"));
+    //get id of item so we can add it to checkbox to get each item 
+    //and check if its true
+    let taskId = $(this).parent().parent().attr("data-id");
     //get the state of the checkbox and if true update
-    let checkbox = document.getElementById('task-completed').checked;
-    let isChecked = false;
+    let checkbox = document.getElementById(`task-completed-${taskId}`).checked;
+    // $(this).parent().parent().attr("data-id");
+    let isChecked;
     if (checkbox === true) {
         isChecked = true;
         console.log('isChecked', isChecked)
     }
+    else {
+        isChecked = false;
+        console.log('isChecked', isChecked)
+    }
+    $.ajax({
+        method: 'PUT',
+        url: `/items/${idToUpdate}`,
+        data: {
+            completed: isChecked
+        }
+    }).then(function (response) {
+        //when we update the completed state, refresh DOM
+        // getItems();
+    }).catch(function (error) {
+        //Log the error in the console log
+        console.log(`Error CheckedTask on ${idToUpdate}, error --> ${error}`);
+    })
 
 }
 
@@ -65,7 +89,7 @@ function saveTask(newTask) {
         })
 }//end saveTask
 
-function getItems() {
+function getItems(event) {
     console.log('in getItems');
     //ajax call to server to get items from db
     $.ajax({
@@ -81,7 +105,7 @@ function getItems() {
                 `
             <tr data-id = ${item.id}>
             <td>${item.item}</td><td>
-            <input type="checkbox" class="is-task-checked" id ="task-completed" value="${item.completed}">
+            <input type="checkbox" class="is-task-checked" id ="task-completed-${item.id}" value="${item.completed}">
             <button class="delete-task-btn">❌</button>
           </td>
             `)

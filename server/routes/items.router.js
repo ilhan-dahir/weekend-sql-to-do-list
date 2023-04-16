@@ -44,6 +44,29 @@ itemRouter.post('/', (req, res) => {
 })
 
 //PUT
+itemRouter.put('/:id', (req, res) => {
+    let idToUpdate = req.params.id;
+    let isChecked = req.body.completed;
+
+    let sqlText = `
+    UPDATE "to_do_list"
+        SET "completed"=$1
+        WHERE "id"=$2;
+    `
+    let sqlValues = [isChecked, idToUpdate];
+
+    pool.query(sqlText, sqlValues)
+        .then((dbRes) => {
+            res.sendStatus(200);
+        })
+        .catch((dbErr) => {
+            console.log('PUT /itemRouter', dbErr);
+            res.sendStatus(500);
+        })
+
+}
+
+)
 
 //DELETE
 itemRouter.delete('/:id', (req, res) => {
