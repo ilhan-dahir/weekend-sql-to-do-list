@@ -22,6 +22,7 @@ function checkedTask() {
     let isChecked;
     if (checkbox === true) {
         isChecked = true;
+        $("view-items").css("background: green");
         console.log('isChecked', isChecked)
     }
     else {
@@ -104,7 +105,7 @@ function getItems(event) {
             $('#view-items').append(
                 `
             <tr data-id = ${item.id}>
-            <td>${item.item}</td><td>
+            <td id="itemtask">${item.item}</td><td>
             <input type="checkbox" class="is-task-checked" id ="task-completed-${item.id}" value="${item.completed}">
             <button class="delete-task-btn">❌</button>
           </td>
