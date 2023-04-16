@@ -1,4 +1,6 @@
-/* body {
+body,
+section,
+div {
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -23,4 +25,4 @@ span {
     border: 0;
     width: 400px;
     border-bottom: 2px solid black;
-} */
+}
