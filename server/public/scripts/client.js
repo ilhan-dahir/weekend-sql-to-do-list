@@ -22,12 +22,13 @@ function checkedTask() {
     let isChecked;
     if (checkbox === true) {
         isChecked = true;
-        $("view-items").css("background: green");
+        $(`#item-task-${taskId}`).css("text-decoration", "line-through");
         console.log('isChecked', isChecked)
     }
     else {
         isChecked = false;
-        console.log('isChecked', isChecked)
+        $(`#item-task-${taskId}`).css("text-decoration", "none");
+        console.log('isChecked', isChecked);
     }
     $.ajax({
         method: 'PUT',
@@ -105,7 +106,7 @@ function getItems(event) {
             $('#view-items').append(
                 `
             <tr data-id = ${item.id}>
-            <td id="itemtask">${item.item}</td><td>
+            <td id="item-task-${item.id}">${item.item}</td><td>
             <input type="checkbox" class="is-task-checked" id ="task-completed-${item.id}" value="${item.completed}">
             <button class="delete-task-btn">❌</button>
           </td>
